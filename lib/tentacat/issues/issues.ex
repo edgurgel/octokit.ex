@@ -40,7 +40,7 @@ defmodule Tentacat.Issues do
       Tentacat.Issues.find "elixir-lang", "elixir", "2974"
       Tentacat.Issues.find "elixir-lang", "elixir", "2974", client
 
-  More info at: https://developer.github.com/v3/issues/#get-a-single-issue
+  More info at: https://developer.github.com/v3/pulls/#get-a-single-issue
   """
   @spec find(Client.t(), binary, binary, binary | integer) :: Tentacat.response()
   def find(client \\ %Client{}, owner, repo, number) do
@@ -93,4 +93,21 @@ defmodule Tentacat.Issues do
   def update(client \\ %Client{}, owner, repo, number, body) when is_map(body) do
     patch("repos/#{owner}/#{repo}/issues/#{number}", client, body)
   end
+
+  @doc """
+  Edit an issue
+
+  ## Example
+
+  Tentacat.Issues.edit "elixir-lang", "elixir", 12, %{state: closed}
+  Tentacat.Issues.edit "elixir-lang", "elixir", 12, %{state: closed}, client
+
+  More info at: https://developer.github.com/v3/issues/#edit-an-issue
+  """
+
+  @spec edit(binary, binary, binary | integer, map, Client.t) :: Tentacat.response
+  def edit(owner, repo, number, body, client \\ %Client{}) do
+    patch "repos/#{owner}/#{repo}/issues/#{number}", client, body
+  end
 end
+
