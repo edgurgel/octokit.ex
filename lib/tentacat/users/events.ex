@@ -18,6 +18,21 @@ defmodule Tentacat.Users.Events do
   end
 
   @doc """
+  List events performed by a user since last check represented by e_tag
+
+  ## Example
+
+      Tentacat.Users.Events.list client, "bastos"
+      Tentacat.Users.Events.list client, "bastos", "2a97f8e2fba8b548ae56bce4074f25cc00674f213963d2f8cf579b8a3"
+
+  More info at: https://developer.github.com/v3/activity/events/#list-events-performed-by-a-user
+  """
+
+  def list(client, user, e_tag) do
+    get("users/#{user}/events", client, [], [], [{"If-None-Match", "\"#{e_tag}\""}])
+  end
+
+  @doc """
   List public events performed by a user
 
   ## Example
@@ -30,6 +45,21 @@ defmodule Tentacat.Users.Events do
   @spec list_public(Client.t(), binary) :: Tentacat.response()
   def list_public(client \\ %Client{}, user) do
     get("users/#{user}/events/public", client)
+  end
+
+  @doc """
+  List public events performed by a user since last check represented by e_tag
+
+  ## Example
+
+      Tentacat.Users.Events.list_public client, "bastos"
+      Tentacat.Users.Events.list_public client, "bastos", "2a97f8e2fba8b548ae56bce4074f25cc00674f213963d2f8cf579b8a3"
+
+  More info at: https://developer.github.com/v3/activity/events/#list-public-events-performed-by-a-user
+  """
+  @spec list_public(Client.t(), binary, binary) :: Tentacat.response()
+  def list_public(client, user, e_tag) do
+    get("users/#{user}/events/public", client, [], [], [{"If-None-Match", "\"#{e_tag}\""}])
   end
 
   @doc """
